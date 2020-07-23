@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { fetchQuizQuestions } from "./API";
 //Components
 import QuestionCard from "./components/questionCard";
+//Types
+import { Difficulty } from "./API";
 
 const TOTAL_QUESTIONS = 10;
 
@@ -12,6 +14,8 @@ function App() {
   const [userAnswer, setUserAnswer] = useState([]);
   const [score, setScore] = useState(0);
   const [gameOver, setGameOver] = useState(true);
+
+  console.log(fetchQuizQuestions(TOTAL_QUESTIONS, Difficulty.EASY));
 
   const startQuiz = async () => {};
 
