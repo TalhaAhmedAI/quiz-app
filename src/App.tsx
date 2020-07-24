@@ -18,13 +18,25 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [questions, setQuestions] = useState<QuestionState[]>([]);
   const [number, setNumber] = useState(0);
-  const [userAnswer, setUserAnswer] = useState<AnswerObject[]>([]);
+  const [userAnswers, setUserAnswers] = useState<AnswerObject[]>([]);
   const [score, setScore] = useState(0);
   const [gameOver, setGameOver] = useState(true);
 
-  console.log(fetchQuizQuestions(TOTAL_QUESTIONS, Difficulty.EASY));
+  const startQuiz = async () => {
+    setLoading(true);
+    setGameOver(false);
 
-  const startQuiz = async () => {};
+    const newQuestions = await fetchQuizQuestions(
+      TOTAL_QUESTIONS,
+      Difficulty.EASY
+    );
+
+    setQuestions(newQuestions);
+    setScore(0);
+    setUserAnswers([]);
+    setNumber(0);
+    setLoading(false);
+  };
 
   const checkAnswer = (e: React.MouseEvent<HTMLButtonElement>) => {};
 
@@ -32,11 +44,14 @@ function App() {
   return (
     <div className="App">
       <h1>React Quiz</h1>
-      <button className="start" onClick={startQuiz}>
-        Start Quiz
-      </button>
-      <p className="score">Score: </p>
-      <p>Loading Questions...</p>
+      {gameOver || userAnswers.length === TOTAL_QUESTIONS ? (
+        <button className="start" onClick={startQuiz}>
+          Start Quiz
+        </button>
+      ) : null}
+
+      {!gameOver ? <p className="score">Score: </p> : null}
+      {loading && <p>Loading Questions...</p>}
       {/* <QuestionCard
         questionNr={number + 1}
         totalQustions={TOTAL_QUESTIONS}
